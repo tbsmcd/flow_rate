@@ -1,3 +1,6 @@
+<p>
+	<?php echo $html->link('更新', './get_rates') ?>
+</p>
 <table>
 <tr>
 <th>rank</th>
