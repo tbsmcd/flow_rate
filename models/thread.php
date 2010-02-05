@@ -12,8 +12,6 @@ class Thread extends AppModel {
 						);
 
 	function getFlowRate($boardData) {
-//		$boardData['server'] = 'http://tsushima.2ch.net/';
-//		$boardData['name'] = 'news';
 		$subjectUrl = $boardData['server'] . $boardData['name'] . '/subject.txt';
 		$fp = @fopen($subjectUrl, 'r');
 		$rates = array();
