@@ -11,14 +11,25 @@ class Thread extends AppModel {
 							)
 						);
 
+	function getIndex($board_id) {
+		
+		$params = array(
+			'conditions' => array('Thread.modified >' => date('Y-m-d H:i:s', strtotime('now -5 minutes'))),
+			'order' => 'Thread.rate DESC',
+			'limit' => '200',
+		);
+		if ($this->hasAny(array('board_id' => $board_id))) {
+			$params['conditions']['Thread.board_id'] = $board_id;
+		}
+		return $this->find('all', $params);
+	}
+
 	function getFlowRate($boardData) {
-		$subjectUrl = $boardData['server'] . $boardData['name'] . '/subject.txt';
-//		$fp = @fopen($subjectUrl, 'r');
 		uses('http_socket');
+		$subjectUrl = $boardData['server'] . $boardData['name'] . '/subject.txt';
 		$socket = new HttpSocket();
 		$socket->get($subjectUrl);
 		$subjects = explode("\n", $socket->response['raw']['body']);
-		$rates = array();
 		foreach ($subjects as $subject) {
 			$line = mb_convert_encoding($subject, 'UTF-8', 'SJIS');
 			if (preg_match('/^([0-9]{10})\.dat<>(.+)\(([0-9]{1,4})\)$/', $line, $matches)) {

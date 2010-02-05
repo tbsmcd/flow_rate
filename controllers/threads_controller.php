@@ -1,15 +1,20 @@
 <?php
 class ThreadsController extends AppController {
+
 	public $name = 'Threads';
 	public $uses = array('Thread', 'Board');
+
 	function index() {
-		$params = array(
-			'conditions' => array('Thread.modified >' => date('Y-m-d H:i:s', strtotime('now -5 minutes'))),
-			'order' => 'Thread.rate DESC',
-			'limit' => '200',
-		);
-		$this->set('threads', $this->Thread->find('all', $params));
+		$this->set('boards', $this->Board->find('all'));
+		if (!empty($this->params['pass'][0]) && $this->params['pass'][0] != '') {
+			$board_id = $this->params['pass'][0];
+		} else {
+			$board_id = '';
+		}
+		$data = $this->Thread->getIndex($board_id);
+		$this->set('threads', $data);
 	}
+
 	function get_rates() {
 		$boards = $this->Board->getBoards();
 		foreach ($boards as $board) {

@@ -1,6 +1,12 @@
 <p>
 	<?php echo $html->link('更新', './get_rates') ?>
 </p>
+<span>Menu => <?php echo $html->link('ALL', './index');
+foreach ($boards as $board) {
+	echo ', ' . $html->link(h($board['Board']['title']), './index/' . $board['Board']['id']);
+}
+?>
+</span>
 <table>
 <tr>
 <th>rank</th>
