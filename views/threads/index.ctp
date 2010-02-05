@@ -5,6 +5,7 @@
 <tr>
 <th>rank</th>
 <th>title</th>
+<th>board</th>
 <th>rate</th>
 <th>created</th>
 </tr>
@@ -12,6 +13,7 @@
 <tr>
 <td><?php echo $rank; ?></td>
 <td><?php echo $html->link(h($thread['Thread']['title']), $thread['Thread']['url']) ?></td>
+<td><?php echo h($thread['Board']['title']) ?></td>
 <td><?php echo h($thread['Thread']['rate']) ?></td>
 <td><?php echo h($thread['Thread']['created']) ?></td>
 </tr>

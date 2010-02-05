@@ -1,7 +1,7 @@
 <?php
 class ThreadsController extends AppController {
 	public $name = 'Threads';
-	public $uses = 'Thread';
+	public $uses = array('Thread', 'Board');
 	function index() {
 		$params = array(
 			'conditions' => array('Thread.modified >' => date('Y-m-d H:i:s', strtotime('now -5 minutes'))),
@@ -10,8 +10,10 @@ class ThreadsController extends AppController {
 		$this->set('threads', $this->Thread->find('all', $params));
 	}
 	function get_rates() {
-		$rates = $this->Thread->getFlowRate();
-		$this->set('rates', $rates);
+		$boards = $this->Board->getBoards();
+		foreach ($boards as $board) {
+			$this->Thread->getFlowRate($board['Board']);
+		}
 		$this->flash('取得完了', './', 3);
 	}
 }
