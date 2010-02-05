@@ -6,6 +6,7 @@ class ThreadsController extends AppController {
 		$params = array(
 			'conditions' => array('Thread.modified >' => date('Y-m-d H:i:s', strtotime('now -5 minutes'))),
 			'order' => 'Thread.rate DESC',
+			'limit' => '200',
 		);
 		$this->set('threads', $this->Thread->find('all', $params));
 	}

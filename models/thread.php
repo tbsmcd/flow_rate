@@ -13,10 +13,14 @@ class Thread extends AppModel {
 
 	function getFlowRate($boardData) {
 		$subjectUrl = $boardData['server'] . $boardData['name'] . '/subject.txt';
-		$fp = @fopen($subjectUrl, 'r');
+//		$fp = @fopen($subjectUrl, 'r');
+		uses('http_socket');
+		$socket = new HttpSocket();
+		$socket->get($subjectUrl);
+		$subjects = explode("\n", $socket->response['raw']['body']);
 		$rates = array();
-		while (!feof($fp)) {
-			$line = mb_convert_encoding(fgets($fp, 1024), 'UTF-8', 'SJIS');
+		foreach ($subjects as $subject) {
+			$line = mb_convert_encoding($subject, 'UTF-8', 'SJIS');
 			if (preg_match('/^([0-9]{10})\.dat<>(.+)\(([0-9]{1,4})\)$/', $line, $matches)) {
 				$data['Thread']['id'] = $matches[1];
 				$data['Thread']['title'] = $matches[2];
